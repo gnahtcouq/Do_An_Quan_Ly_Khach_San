@@ -20,27 +20,27 @@ void docDanhSachCacPhong(Phong nhieuPhong[], int &n) {
     string fileName = "../File/phong/danhsachphong.txt";
     ifstream fileIn(fileName);
     if (fileIn.fail()) {
-        cout << "\n\t(!) Không tìm thấy tập tin, tạo tập tin mới" << "\n";
+        cout << "\n\t(!) Không tìm thấy tập tin `danhsachphong.txt`, tạo tập tin mới" << "\n";
         ofstream fileOut(fileName);
+        fileOut << '0';
         fileOut.close();
-        n = 0;
+        system("pause");
     } else {
         fileIn >> n;
         fileIn.ignore();
         for (int i = 0; i < n; i++) {
             docMotPhong(fileIn, nhieuPhong[i]);
         }
-        fileIn.close();
     }
+    fileIn.close();
 }
 
 void ghiDanhSachCacPhong(Phong nhieuPhong[], int &n) {
     string fileName = "../File/phong/danhsachphong.txt";
     ofstream fileOut(fileName);
     if (fileOut.fail()) {
-        cout << "\n\t(!) Không tìm thấy tập tin" << "\n";
+        cout << "\n\t(!) Không tìm thấy tập tin `danhsachphong.txt`" << "\n";
         system("pause");
-
     } else {
         fileOut << n << endl;
         for (int i = 0; i < n; i++) {
@@ -61,24 +61,19 @@ Phong *layViTriCuaPhong(Phong nhieuPhong[], int n, int soPhong) {
 
 void xuatDanhSachCacPhong(Phong nhieuPhong[], int n) {
     if (n != 0) {
-        // nếu không có phòng
-        if (kiemTraHetPhong(nhieuPhong, n))
-            cout << "\n\t(!) Chưa có phòng" << "\n";
-        else {
-            cout << "*------------*-------------*--------------------*--------------------*" << "\n";
-            cout << setw(15) << left << "| Mã phòng"
-                 << "|";
-            cout << setw(16) << left << " Số phòng"
-                 << "|";
-            cout << setw(23) << left << " Kiểu phòng"
-                 << "|";
-            cout << setw(23) << left << " Tình trạng"
-                 << "|" << "\n";
-            cout << "*------------*-------------*--------------------*--------------------*\n";
-            for (int i = 0; i < n; i++)
-                inMotPhongTheoChieuNgang(nhieuPhong[i]);
-            cout << "*------------*-------------*--------------------*--------------------*" << "\n";
-        }
+        cout << "*------------*-------------*--------------------*--------------------*" << "\n";
+        cout << setw(15) << left << "| Mã phòng"
+             << "|";
+        cout << setw(16) << left << " Số phòng"
+             << "|";
+        cout << setw(23) << left << " Loại phòng"
+             << "|";
+        cout << setw(23) << left << " Tình trạng"
+             << "|" << "\n";
+        cout << "*------------*-------------*--------------------*--------------------*\n";
+        for (int i = 0; i < n; i++)
+            inMotPhongTheoChieuNgang(nhieuPhong[i]);
+        cout << "*------------*-------------*--------------------*--------------------*" << "\n";
     } else
         cout << "\n\t(!) Danh sách phòng trống" << "\n";
 }
@@ -90,7 +85,7 @@ void xuatDanhSachCacPhongCoThoiGian(Phong nhieuPhong[], int n) {
              << "|";
         cout << setw(13) << left << " Số phòng"
              << "|";
-        cout << setw(23) << left << " Kiểu phòng"
+        cout << setw(23) << left << " Loại phòng"
              << "|";
         cout << setw(23) << left << " Tình trạng"
              << "|";
@@ -115,7 +110,7 @@ void xuatDanhSachCacPhongDay(Phong nhieuPhong[], int n) {
                  << "|";
             cout << setw(13) << left << " Số phòng"
                  << "|";
-            cout << setw(23) << left << " Kiểu phòng"
+            cout << setw(23) << left << " Loại phòng"
                  << "|";
             cout << setw(23) << left << " Tình trạng"
                  << "|";
@@ -142,7 +137,7 @@ void xuatDanhSachCacPhongTrong(Phong nhieuPhong[], int n) {
                  << "|";
             cout << setw(16) << left << " Số phòng"
                  << "|";
-            cout << setw(23) << left << " Kiểu phòng"
+            cout << setw(23) << left << " Loại phòng"
                  << "|";
             cout << setw(23) << left << " Tình trạng"
                  << "|" << "\n";

@@ -1,15 +1,16 @@
 #pragma once
-#include "utils.hpp"
+#include "handle.hpp"
 
 struct Phong {
-    string maPhong;                          // mã phòng
-    int soPhong;                             // số phòng
-    bool loaiPhong;                          // loại phòng: thường hoặc cao cấp
-    bool tinhTrang = 0;                      // tình trạng phòng - 0:trống   1:đầy
-    int gioBD = 0, phutBD = 0, giayBD = 0;   // thời gian bắt đầu (giờ:phút:giây)
-    int ngayBD = 0, thangBD = 0, namBD = 0;  // thời gian bắt đầu (ngày/tháng/năm)
-    int gioKT = 0, phutKT = 0, giayKT = 0;   // thời gian kết thúc (giờ:phút:giây)
-    int ngayKT = 0, thangKT = 0, namKT = 0;  // thời gian kết thúc (ngày/tháng/năm)
+    string maPhong;                                               // mã phòng
+    int soPhong;                                                  // số phòng
+    int loaiPhong;                                                // loại phòng: thường hoặc cao cấp
+    bool tinhTrang = 0;                                           // tình trạng phòng - 0:trống   1:đầy
+    int gioBD = 0, phutBD = 0, giayBD = 0;                        // thời gian bắt đầu (giờ:phút:giây)
+    int ngayBD = 0, thangBD = 0, namBD = 0;                       // thời gian bắt đầu (ngày/tháng/năm)
+    int gioKT = 0, phutKT = 0, giayKT = 0;                        // thời gian kết thúc (giờ:phút:giây)
+    int ngayKT = 0, thangKT = 0, namKT = 0;                       // thời gian kết thúc (ngày/tháng/năm)
+    long long giaTien = 0, giaTienThuong = 0, giaTienCaoCap = 0;  // giá tiền
 };
 
 string taoMaPhong(Phong[], int);                 // tạo mã phòng ngẫu nhiên
@@ -21,6 +22,9 @@ void inMotPhongTheoChieuNgang(Phong);            // in một phòng theo chiều
 void inMotPhongTheoChieuNgangCoThoiGian(Phong);  // im một phòng theo chiều ngang có thời gian thuê
 void docMotPhong(ifstream &, Phong &);           // đọc thông tin một phòng từ file
 void ghiMotPhong(ofstream &, Phong);             // ghi thông tin một phòng ra file
+void docGiaTien(Phong &);                        // đọc giá tiền từ file
+void ghiGiaTien(Phong);                          // ghi giá tiền từ file
+void thietLapGiaTien(Phong &);                   // thiết lập giá tiền
 
 string taoMaPhong(Phong nhieuPhong[], int n) {
     string ma = "STU000";
@@ -46,63 +50,47 @@ int kiemTraTrungSoPhong(Phong nhieuPhong[], int n, int soPhong) {
 }
 
 void themPhong(Phong nhieuPhong[], int &n, int &soPhong) {
-    Phong mt;
-    int soPhongTam;
-    mt.maPhong = taoMaPhong(nhieuPhong, n);
-    string fileName = "../File/phong/danhsachphong.txt";
+    Phong p;
+    p.maPhong = taoMaPhong(nhieuPhong, n);
 
-    ifstream fileIn(fileName);
-    bool fileExists = !fileIn.fail();
-    fileIn.close();
-
-    if (fileExists && n > 0) {
-        do {
-            cout << "\n(?) Nhập số phòng (nhập -1 để hủy): ";
-            cin >> mt.soPhong;
-            if (mt.soPhong == -1) {
-                cout << "\n\t(!) Hủy thêm phòng" << "\n";
-                system("pause");
-                return;  // Exit the function if the user cancels
-            }
-            soPhongTam = n + 1;
-            if (kiemTraTrungSoPhong(nhieuPhong, n, mt.soPhong) != -1) {
-                cout << "\n\t(!) Số phòng đã tồn tại. Xin hãy nhập lại" << "\n";
-            } else if (mt.soPhong > soPhongTam) {
-                cout << "\n\t(!) Số phòng chỉ được lớn hơn số phòng lớn nhất hiện tại 1 đơn vị. Xin hãy nhập lại" << "\n";
-            }
-        } while (kiemTraTrungSoPhong(nhieuPhong, n, mt.soPhong) != -1 || mt.soPhong > soPhongTam);
-    } else {
-        do {
-            cout << "\n(?) Nhập số phòng (nhập -1 để hủy): ";
-            cin >> mt.soPhong;
-            if (mt.soPhong == -1) {
-                cout << "\n\t(!) Hủy thêm phòng" << "\n";
-                system("pause");
-                return;  // Exit the function if the user cancels
-            }
-            if (mt.soPhong != 1) {
-                cout << "\n\t(!) Số phòng khởi đầu mặc định sẽ là 1. Xin hãy nhập lại" << "\n";
-            }
-        } while (mt.soPhong != 1);
-    }
-
-    soPhong = mt.soPhong;
     do {
-        cout << "\n(?) Nhập kiểu phòng (0: Thường - 1: Cao cấp, nhập -1 để hủy): ";
-        cin >> mt.loaiPhong;
-        if (mt.loaiPhong == -1) {
-            cout << "\n\t(!) Hủy thêm phòng" << "\n";
-            system("pause");
-            return;  // Exit the function if the user cancels
+        cout << "\n(?) Nhập số phòng: ";
+        if (cin.fail()) {
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
         }
-        if (mt.loaiPhong < 0 || mt.loaiPhong > 1) {
-            cout << "\n\t(!) Kiểu phòng không hợp lệ. Xin hãy nhập lại" << "\n";
+        if (!(cin >> p.soPhong)) {
+            cout << "\n\t(!) Vui lòng nhập số nguyên\n";
+            continue;
         }
-    } while (mt.loaiPhong < 0 || mt.loaiPhong > 1);
+        if (p.soPhong <= 0 || p.soPhong >= MAX) {
+            cout << "\n\t(!) Số phòng không hợp lệ [1-" << MAX << "]. Xin hãy nhập lại" << "\n";
+        } else if (kiemTraTrungSoPhong(nhieuPhong, n, p.soPhong) != -1) {
+            cout << "\n\t(!) Số phòng đã tồn tại. Xin hãy nhập lại" << "\n";
+        }
+    } while (cin.fail() || p.soPhong <= 0 || p.soPhong >= MAX || kiemTraTrungSoPhong(nhieuPhong, n, p.soPhong) != -1);
+
+    soPhong = p.soPhong;
+    cin.ignore();
+
+    do {
+        cout << "\n(?) Nhập loại phòng (0: Thường - 1: Cao cấp): ";
+        if (cin.fail()) {
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        }
+        if (!(cin >> p.loaiPhong)) {
+            cout << "\n\t(!) Vui lòng nhập số nguyên\n";
+            continue;
+        }
+        if (p.loaiPhong < 0 || p.loaiPhong > 1) {
+            cout << "\n\t(!) Loại phòng không hợp lệ. Xin hãy nhập lại" << "\n";
+        }
+    } while (cin.fail() || p.loaiPhong < 0 || p.loaiPhong > 1);
 
     for (int i = n - 1; i >= 0; i--)
         nhieuPhong[i + 1] = nhieuPhong[i];
-    nhieuPhong[0] = mt;
+    nhieuPhong[0] = p;
     n++;
     cout << "\n\t(!) Thêm phòng thành công" << "\n";
     system("pause");
@@ -136,13 +124,13 @@ void xoaPhong(Phong nhieuPhong[], int &n, int &kiemTra) {
 
 void inMotPhongTheoChieuNgang(Phong phong) {
     string loaiKieuPhong, tinhTrangPhong;
-    if (phong.tinhTrang == 1)  // tinhTrang == 1 -> Máy đã có người sử dụng
+    if (phong.tinhTrang == 1)  // tinhTrang == 1 -> phòng đã có người sử dụng
         tinhTrangPhong = "Đầy";
-    else  // tinhTrang == 0 -> Máy trống
+    else  // tinhTrang == 0 -> phòng trống
         tinhTrangPhong = "Trống";
-    if (phong.loaiPhong == 1)  // loaiPhong == 1 -> Máy cao cấp
+    if (phong.loaiPhong == 1)  // loaiPhong == 1 -> phòng cao cấp
         loaiKieuPhong = "Cao cấp";
-    else  // loaiPhong == 0 -> Máy thường
+    else  // loaiPhong == 0 -> phòng thường
         loaiKieuPhong = "Thường";
     cout << setw(13) << left << "| " + phong.maPhong << "|";
     cout << setw(13) << left << " " + to_string(phong.soPhong) << "|";
@@ -181,13 +169,13 @@ void inMotPhongTheoChieuNgangCoThoiGian(Phong phong) {
 
     string thoiGian = GIOBD + ":" + PHUTBD + ":" + GIAYBD + " - " + NGAYBD + "/" + THANGBD + "/" + NAMBD;
 
-    if (phong.tinhTrang == 1)  // tinhTrang == 1 -> Máy đã có người sử dụng
+    if (phong.tinhTrang == 1)  // tinhTrang == 1 -> phòng đã có người sử dụng
         tinhTrangPhong = "Đầy";
-    else  // tinhTrang == 0 -> Máy trống
+    else  // tinhTrang == 0 -> phòng trống
         tinhTrangPhong = "Trống";
-    if (phong.loaiPhong == 1)  // loaiPhong == 1 -> Máy cao cấp
+    if (phong.loaiPhong == 1)  // loaiPhong == 1 -> phòng cao cấp
         loaiKieuPhong = "Cao cấp";
-    else  // loaiPhong == 0 -> Máy thường
+    else  // loaiPhong == 0 -> phòng thường
         loaiKieuPhong = "Thường";
 
     cout << setw(10) << left << "| " + phong.maPhong << "|";
@@ -225,4 +213,50 @@ void ghiMotPhong(ofstream &fileOut, Phong phong) {
     fileOut << phong.soPhong << ' ';
     fileOut << phong.loaiPhong << ' ';
     fileOut << phong.tinhTrang;
+}
+void docGiaTien(Phong &phong) {
+    string fileName = "../File/phong/giatien.txt";
+    ifstream fileIn(fileName);
+    if (fileIn.fail()) {
+        cout << "\n\t(!) Không tìm thấy tập tin `giatien.txt`, tạo tập tin mới" << "\n";
+        ofstream fileOut(fileName);
+        fileOut.close();
+    } else {
+        while (!fileIn.eof()) {
+            fileIn >> phong.giaTienThuong;
+            fileIn >> phong.giaTienCaoCap;
+        }
+    }
+    fileIn.close();
+}
+void ghiGiaTien(Phong phong) {
+    string fileName = "../File/phong/giatien.txt";
+    ofstream fileOut(fileName);
+    if (fileOut.fail()) {
+        cout << "\n\t(!) Không tìm thấy tập tin `giatien.txt`" << "\n";
+        system("pause");
+    } else {
+        fflush(stdin);
+        fileOut << phong.giaTienThuong << ' ';
+        fileOut << phong.giaTienCaoCap;
+    }
+    fileOut.close();
+}
+
+void thietLapGiaTien(Phong &phong) {
+    cout << "\n*----------- GIÁ TIỀN HIỆN TẠI -----------*\n";
+    cout << setw(20) << left << "| Phòng thường:";
+    cout << setw(25) << right << to_string(phong.giaTienThuong) + " VND"
+         << " |" << "\n";
+    cout << setw(20) << left << "| Phòng cao cấp:";
+    cout << setw(24) << right << to_string(phong.giaTienCaoCap) + " VND"
+         << " |";
+    cout << "\n*-----------------------------------------*";
+    cout << "\n(?) Nhập giá tiền phòng thường / 1 giờ: ";
+    cin >> phong.giaTienThuong;
+    cout << "\n(?) Nhập giá tiền phòng cao cấp / 1 giờ: ";
+    cin >> phong.giaTienCaoCap;
+    cout << "\n\t(!) Thiết lập giá tiền thành công\n";
+    system("pause");
+    ghiGiaTien(phong);
 }
