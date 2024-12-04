@@ -11,6 +11,9 @@
 #include <random>  // srand()
 #include <string>
 
+#include "colors.hpp"  // thư viện màu
+using namespace colors;
+
 using namespace std;
 
 #define MAX 200

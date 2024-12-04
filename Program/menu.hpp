@@ -22,7 +22,7 @@ void menu() {
         system("cls");
         cout << "\t\t\t*-----------------------------------------*\n";
         cout << "\t\t\t|                                         |\n";
-        cout << "\t\t\t|         ~  QUẢN LÝ KHÁCH SẠN  ~         |\n";
+        cout << "\t\t\t|         /  QUẢN LÝ KHÁCH SẠN  /         |\n";
         cout << "\t\t\t|                                         |\n";
         cout << "\t\t\t*-----------------------------------------*\n";
         cout << "\t\t\t|      1.   Thêm phòng                    |\n";
@@ -88,7 +88,7 @@ void menu() {
                     cout << "\nMENU/QUẢN LÝ PHÒNG/XEM TÌNH TRẠNG PHÒNG" << "\n";
                     cout << "\t\t\t*-----------------------------------------*\n";
                     cout << "\t\t\t|                                         |\n";
-                    cout << "\t\t\t|         ~  XEM TÌNH TRẠNG PHÒNG  ~      |\n";
+                    cout << "\t\t\t|         /  XEM TÌNH TRẠNG PHÒNG  /      |\n";
                     cout << "\t\t\t|                                         |\n";
                     cout << "\t\t\t*-----------------------------------------*\n";
                     cout << "\t\t\t|      1.   Tất cả phòng                  |\n";
@@ -129,7 +129,7 @@ void menu() {
             case 4:
                 system("cls");
                 cout << "\nMENU/THUÊ PHÒNG" << "\n";
-                chonPhongTrucTiep(nhieuPhong, n);
+                thuePhong(nhieuPhong, n);
                 ghiDanhSachCacPhong(nhieuPhong, n);
                 ghiDanhSachNguoiThueTrucTiep(thueNhieuPhong, n);
                 break;
@@ -196,9 +196,9 @@ void loading(Phong &p, Phong nhieuPhong[], int &n, ThueNhieuPhong &thueNhieuPhon
         int viTri = doDaiThanh * tienTrinh;
         for (int i = 0; i < doDaiThanh; ++i) {
             if (i < viTri)
-                cout << " ";
+                cout << on_bright_green << " " << reset;
             else if (i == viTri)
-                cout << " ";
+                cout << on_bright_green << " " << reset;
             else
                 cout << " ";
         }

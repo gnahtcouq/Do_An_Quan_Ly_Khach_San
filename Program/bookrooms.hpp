@@ -18,7 +18,7 @@ void themNodeVaoCuoi(ThueNhieuPhong &, ThueMotPhong);                 // thêm N
 void xoaNodeDauTien(ThueNhieuPhong &);                                // xóa Node đầu tiên
 void xoaNodeCuoiCung(ThueNhieuPhong &);                               // xóa Node cuối cùng
 void giaiPhongDanhSachNguoiThueTrucTiep(ThueNhieuPhong &);            // giải phóng danh sách người thuê trực tiếp
-void chonPhongTrucTiep(Phong[], int);                                 // mở phòng trực tiếp
+void thuePhong(Phong[], int);                                         // mở phòng trực tiếp
 void thanhToan(Phong[], int);                                         // thanh toán
 Node *taoNodeThueMotPhong(ThueMotPhong);                              // tạo Node
 void sapXepDanhSachNguoiThueTheoSoPhong_QuickSort(ThueNhieuPhong &);  // sắp xếp danh sách người thuê theo số phòng
@@ -133,7 +133,7 @@ void sapXepDanhSachNguoiThueTheoSoPhong_QuickSort(ThueNhieuPhong &thueNhieuPhong
         thueNhieuPhong.pTail = tag;
 }
 
-void chonPhongTrucTiep(Phong nhieuPhong[], int n) {
+void thuePhong(Phong nhieuPhong[], int n) {
     if (n != 0) {
         if (kiemTraHetPhong(nhieuPhong, n)) {  // nếu hết phòng
             cout << "\n\t(!) Hết phòng" << "\n";
@@ -150,7 +150,7 @@ void chonPhongTrucTiep(Phong nhieuPhong[], int n) {
             r.phong->ngayBD = ngayBD;
             r.phong->thangBD = thangBD;
             r.phong->namBD = namBD;
-            cout << "\n\t(!) Chọn phòng thành công" << "\n";
+            cout << "\n\t(!) Thuê phòng thành công" << "\n";
             system("pause");
         }
     } else {
